@@ -74,8 +74,8 @@ function geronimo() {
 			},
 			dataType: 'json',
 			success: function (data) {
-				console.log('Highscore added: ' + data);
-				$('#highscore-form').html('<span class="button" id="show-highscore">View Highscore List</span>');
+				console.log('最高分已添加: ' + data);
+				$('#highscore-form').html('<span class="button" id="show-highscore">查看最高分列表</span>');
 			},
 			error: function (errorThrown) {
 				console.log(errorThrown);
@@ -85,12 +85,12 @@ function geronimo() {
 
 	function addHighscore() {
 		var name = $("input[type=text]").val();
-		$("#highscore-form").html("Saving highscore...");
+		$("#highscore-form").html("保存最高分...");
 		ajax_add(name, game.score.score, game.level);
 	}
 
 	function buildWall(context, gridX, gridY, width, height) {
-		console.log("BuildWall");
+		console.log("建造墙壁");
 		width = width * 2 - 1;
 		height = height * 2 - 1;
 		context.fillRect(pacman.radius / 2 + gridX * 2 * pacman.radius, pacman.radius / 2 + gridY * 2 * pacman.radius, width * pacman.radius, height * pacman.radius);
@@ -111,18 +111,18 @@ function geronimo() {
 				return;
 
 			window['console']['log'] = originalConsoleLog;
-			console.log('console.log enabled');
+			console.log('console.log 已启用');
 
 			if (originalConsoleDebug === null)
 				return;
 
 			window['console']['debug'] = originalConsoleDebug;
-			console.log('console.debug enabled');
+			console.log('console.debug 已启用');
 
 		};
 
 		logger.disableLogger = function disableLogger() {
-			console.log('console.log disabled');
+			console.log('console.log 已禁用');
 			originalConsoleLog = console.log;
 			window['console']['log'] = function () {};
 			originalConsoleDebug = console.debug;
@@ -172,7 +172,7 @@ function geronimo() {
 		this.monsters;
 		this.level = 1;
 		this.refreshLevel = function (h) {
-			$(h).html("Lvl: " + this.level);
+			$(h).html("等级: " + this.level);
 		};
 		this.canvas = $("#myCanvas").get(0);
 		this.wallColor = "Blue";
@@ -207,7 +207,7 @@ function geronimo() {
 
 		/* Game Functions */
 		this.startGhostFrightened = function () {
-			console.log("ghost frigthened");
+			console.log("幽灵被吓到");
 			this.ghostFrightened = true;
 			this.ghostFrightenedTimer = 240;
 			inky.dazzle();
@@ -243,7 +243,7 @@ function geronimo() {
 			if (this.ghostModeTimer === 0 && game.level > 1) {
 				this.ghostMode ^= 1;
 				this.ghostModeTimer = 200 + this.ghostMode * 450;
-				console.log("ghostMode=" + this.ghostMode);
+				console.log("幽灵模式=" + this.ghostMode);
 
 				game.buildWalls();
 
@@ -286,16 +286,16 @@ function geronimo() {
 		};
 
 		this.newGame = function () {
-			var r = confirm("Are you sure you want to restart?");
+			var r = confirm("你确定要重新开始吗？");
 			if (r) {
-				console.log("new Game");
+				console.log("新游戏");
 				this.init(0);
 				this.forceResume();
 			}
 		};
 
 		this.nextLevel = function () {
-			console.debug('nextLevel: current, final', this.level, FINAL_LEVEL);
+			console.debug('下一关：当前关，最后一关', this.level, FINAL_LEVEL);
 			if (this.level === FINAL_LEVEL) {
 				console.log('next level, ' + FINAL_LEVEL + ', end game');
 				game.endGame(true);
@@ -303,7 +303,7 @@ function geronimo() {
 			} else {
 				this.level++;
 				console.log("Level " + game.level);
-				game.pauseAndShowMessage("Level " + game.level, this.getLevelTitle() + "<br/>(Click to continue!)");
+				game.pauseAndShowMessage("关卡 " + game.level, this.getLevelTitle() + "<br/>(点击继续！)");
 				game.refreshLevel(".level");
 				this.init(1);
 			}
@@ -315,7 +315,7 @@ function geronimo() {
 			for (var i = 0; i < count; i++) {
 				html += " <img src='img/heart.png'>";
 			}
-			$(".lives").html("Lives: " + html);
+			$(".lives").html("生命值: " + html);
 
 		};
 
@@ -327,34 +327,34 @@ function geronimo() {
 		this.getLevelTitle = function () {
 			switch (this.level) {
 				case 2:
-					return '"The chase begins"';
+					return '"追逐开始"';
 					// activate chase / scatter switching
 				case 3:
-					return '"Inky\s awakening"';
+					return '"Inky 的觉醒"';
 					// Inky starts leaving the ghost house
 				case 4:
-					return '"Clyde\s awakening"';
+					return '"Clyde 的觉醒"';
 					// Clyde starts leaving the ghost house
 				case 5:
-					return '"need for speed"';
+					return '"速度的需求"';
 					// All the ghosts get faster from now on
 				case 6:
-					return '"hunting season 1"';
+					return '"狩猎季节 1"';
 					// TODO: No scatter mood this time
 				case 7:
-					return '"the big calm"';
+					return '"大平静"';
 					// TODO: Only scatter mood this time
 				case 8:
-					return '"hunting season 2"';
+					return '"狩猎季节 2"';
 					// TODO: No scatter mood and all ghosts leave instantly
 				case 9:
-					return '"ghosts on speed"';
+					return '"幽灵加速"';
 					// TODO: Ghosts get even faster for this level
 				case FINAL_LEVEL:
-					return '"The final chase"';
+					return '"最终追逐"';
 					// TODO: Ghosts get even faster for this level
 				default:
-					return '"nothing new"';
+					return '"没有新内容"';
 			}
 		}
 
@@ -394,9 +394,9 @@ function geronimo() {
 			var inputHTML = scoreIsValid ? `<div id='highscore-form'>
 					<span id='form-validator'></span>
 					<input type='text' id='playerName'/>
-					<span class='button' id='score-submit'>save</span>
-				</div>` : `<div id='invalid-score'>Your score looks fake, the highscore list is only for honest players ;)</div>`;
-			this.pauseAndShowMessage("Game over", "Total Score: " + this.score.score + (HIGHSCORE_ENABLED ? inputHTML : ''));
+					<span class='button' id='score-submit'>保存</span>
+				</div>` : `<div id='invalid-score'>你的分数看起来不真实，最高分列表仅面向诚实的玩家 ;)</div>`;
+			this.pauseAndShowMessage("游戏结束", "总分: " + this.score.score + (HIGHSCORE_ENABLED ? inputHTML : ''));
 			$('#playerName').focus();
 		}
 
@@ -414,7 +414,7 @@ function geronimo() {
 
 		this.forcePause = function () {
 			this.timer.stop();
-			this.pauseAndShowMessage("Pause", "Click to Resume");
+			this.pauseAndShowMessage("暂停", "点击以继续");
 		}
 
 		this.forceResume = function () {
@@ -425,7 +425,7 @@ function geronimo() {
 
 		this.pauseResume = function () {
 			if (this.gameOver) {
-				console.log('Cannot pause / resume. GameOver set to true.');
+				console.log('无法暂停/继续。游戏已结束（GameOver 设置为 true）。');
 				return;
 			}
 			if (!this.started) {
@@ -433,7 +433,7 @@ function geronimo() {
 			} else if (this.pause) {
 				this.forceResume();
 			} else {
-				this.pauseAndShowMessage("Pause", "Click to Resume");
+				this.pauseAndShowMessage("暂停", "点击以继续");
 			}
 		};
 
@@ -622,7 +622,7 @@ function geronimo() {
 			this.score += i;
 		};
 		this.refresh = function (h) {
-			$(h).html("Score: " + this.score);
+			$(h).html("得分: " + this.score);
 		};
 
 	}
@@ -1377,7 +1377,7 @@ function geronimo() {
 		$('body').on('click', '#score-submit', function () {
 			console.log("submit highscore pressed");
 			if ($('#playerName').val() === "" || $('#playerName').val() === undefined) {
-				$('#form-validator').html("Please enter a name<br/>");
+				$('#form-validator').html("请输入一个名字<br/>");
 			} else {
 				$('#form-validator').html("");
 				addHighscore();
